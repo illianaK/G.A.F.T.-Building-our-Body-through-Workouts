@@ -1,0 +1,1310 @@
+```html
+<!DOCTYPE html>
+<html lang="en" class="h-full dark" data-theme="fem">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>GAFT Build your Body for You - Gender-Affirming Fitness & Body Contour System</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome Icons CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Canvas Confetti CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <!-- Tailwind Dynamic Configuration Script -->
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        theme: {
+                            accent: 'var(--color-accent)',
+                            'accent-hover': 'var(--color-accent-hover)',
+                            secondary: 'var(--color-secondary)',
+                            glow: 'var(--color-glow)',
+                            card: 'var(--color-card-bg)',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif']
+                    },
+                    animation: {
+                        'pulse-glow': 'pulseGlow 3s infinite ease-in-out',
+                        'float': 'floatSlow 6s ease-in-out infinite',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        :root[data-theme="fem"] {
+            --color-accent: #f43f5e;        /* Rose Crimson */
+            --color-accent-hover: #e11d48;
+            --color-secondary: #c084fc;     /* Fuchsia Violet */
+            --color-glow: rgba(244, 63, 94, 0.25);
+            --color-card-bg: rgba(22, 13, 29, 0.75);
+            --badge-bg: rgba(244, 63, 94, 0.15);
+            --badge-border: rgba(244, 63, 94, 0.35);
+            --badge-text: #fb7185;
+        }
+
+        :root[data-theme="masc"] {
+            --color-accent: #0284c7;        /* Electric Sky Blue */
+            --color-accent-hover: #0369a1;
+            --color-secondary: #6366f1;     /* Deep Indigo */
+            --color-glow: rgba(2, 132, 199, 0.25);
+            --color-card-bg: rgba(10, 20, 36, 0.75);
+            --badge-bg: rgba(2, 132, 199, 0.15);
+            --badge-border: rgba(2, 132, 199, 0.35);
+            --badge-text: #38bdf8;
+        }
+
+        :root[data-theme="enby"] {
+            --color-accent: #a855f7;        /* Vivid Violet */
+            --color-accent-hover: #9333ea;
+            --color-secondary: #10b981;     /* Emerald Green */
+            --color-glow: rgba(168, 85, 247, 0.25);
+            --color-card-bg: rgba(20, 15, 33, 0.75);
+            --badge-bg: rgba(168, 85, 247, 0.15);
+            --badge-border: rgba(168, 85, 247, 0.35);
+            --badge-text: #c084fc;
+        }
+
+        :root[data-theme="neutral"] {
+            --color-accent: #14b8a6;        /* Bright Teal */
+            --color-accent-hover: #0d9488;
+            --color-secondary: #06b6d4;     /* Cyan */
+            --color-glow: rgba(20, 184, 166, 0.25);
+            --color-card-bg: rgba(11, 23, 28, 0.75);
+            --badge-bg: rgba(20, 184, 166, 0.15);
+            --badge-border: rgba(20, 184, 166, 0.35);
+            --badge-text: #2dd4bf;
+        }
+
+        html, body {
+            height: 100%;
+            height: 100dvh;
+            width: 100%;
+            overflow: hidden;
+            background-color: #030712 !important;
+            color: #f3f4f6;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        }
+
+        .ambient-bg {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            background: 
+                radial-gradient(circle at 15% 15%, var(--color-glow) 0%, transparent 45%),
+                radial-gradient(circle at 85% 85%, rgba(99, 102, 241, 0.12) 0%, transparent 50%),
+                radial-gradient(circle at 50% 50%, #030712 100%, transparent 100%);
+        }
+
+        .modern-glass {
+            background: var(--color-card-bg);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.7);
+        }
+
+        .modern-glass-interactive {
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .modern-glass-interactive:hover {
+            border-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 25px 50px -12px var(--color-glow);
+        }
+
+        /* Dynamic Theme Custom Button Classes */
+        .theme-btn-accent {
+            background: linear-gradient(135deg, var(--color-accent), var(--color-secondary));
+            color: #ffffff;
+            box-shadow: 0 4px 25px var(--color-glow);
+        }
+        .theme-btn-accent:hover {
+            filter: brightness(1.15);
+            transform: scale(1.01);
+        }
+
+        .theme-badge-pill {
+            background-color: var(--badge-bg);
+            border: 1px solid var(--badge-border);
+            color: var(--badge-text);
+        }
+
+        .muscle-zone {
+            transition: all 0.25s ease;
+            cursor: pointer;
+        }
+        .muscle-zone:hover {
+            filter: drop-shadow(0 0 12px var(--color-accent));
+            opacity: 0.95;
+            stroke: #ffffff;
+            stroke-width: 1.5px;
+        }
+
+        /* Custom Scrollbar Styles */
+        .custom-scroll::-webkit-scrollbar {
+            width: 5px;
+        }
+        .custom-scroll::-webkit-scrollbar-track {
+            background: rgba(3, 7, 18, 0.5);
+        }
+        .custom-scroll::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 99px;
+        }
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.75; transform: scale(1.02); }
+        }
+        @keyframes floatSlow {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-6px); }
+        }
+    </style>
+</head>
+<body class="selection:bg-rose-500 selection:text-white">
+
+    <div class="ambient-bg"></div>
+
+    <div class="relative z-10 flex h-full w-full max-w-[1600px] mx-auto overflow-hidden">
+
+        <aside class="hidden lg:flex flex-col w-72 h-full bg-slate-950/80 backdrop-blur-2xl border-r border-slate-800/80 p-5 justify-between flex-none">
+            <div class="space-y-6">
+                <!-- App Title Brand -->
+                <div class="flex items-center gap-3 px-2">
+                    <div class="w-10 h-10 rounded-2xl theme-btn-accent flex items-center justify-center font-black text-lg shadow-lg">
+                        <i class="fa-solid fa-shapes"></i>
+                    </div>
+                    <div>
+                        <h1 class="font-black text-base tracking-tight text-white flex items-center gap-2">
+                            AffirmFit <span class="text-[9px] font-extrabold px-2 py-0.5 rounded-full theme-badge-pill uppercase">GAFT</span>
+                        </h1>
+                        <p class="text-[10px] text-slate-400 font-medium uppercase tracking-wider mt-0.5">Gender-Affirming Studio</p>
+                    </div>
+                </div>
+
+                <!-- Desktop Sidebar Navigation Links -->
+                <nav class="space-y-1.5">
+                    <button onclick="navigateToPage('dashboard')" id="nav-item-dashboard" class="sidebar-nav-btn active w-full px-4 py-3 rounded-2xl text-xs font-bold transition flex items-center gap-3 bg-slate-900 border border-slate-800 text-white">
+                        <i class="fa-solid fa-chart-pie text-sm text-teal-400"></i>
+                        <span>Dashboard Studio</span>
+                    </button>
+                    <button onclick="navigateToPage('profile')" id="nav-item-profile" class="sidebar-nav-btn w-full px-4 py-3 rounded-2xl text-xs font-semibold transition flex items-center gap-3 text-slate-400 hover:text-white hover:bg-slate-900/60">
+                        <i class="fa-solid fa-sliders text-sm text-pink-400"></i>
+                        <span>Body Archetypes</span>
+                    </button>
+                    <button onclick="navigateToPage('routine')" id="nav-item-routine" class="sidebar-nav-btn w-full px-4 py-3 rounded-2xl text-xs font-semibold transition flex items-center gap-3 text-slate-400 hover:text-white hover:bg-slate-900/60">
+                        <i class="fa-solid fa-dumbbell text-sm text-purple-400"></i>
+                        <span>Today's Routine</span>
+                    </button>
+                    <button onclick="navigateToPage('sculpt')" id="nav-item-sculpt" class="sidebar-nav-btn w-full px-4 py-3 rounded-2xl text-xs font-semibold transition flex items-center gap-3 text-slate-400 hover:text-white hover:bg-slate-900/60">
+                        <i class="fa-solid fa-child-reaching text-sm text-sky-400"></i>
+                        <span>Body Contour Engine</span>
+                    </button>
+                    <button onclick="navigateToPage('library')" id="nav-item-library" class="sidebar-nav-btn w-full px-4 py-3 rounded-2xl text-xs font-semibold transition flex items-center gap-3 text-slate-400 hover:text-white hover:bg-slate-900/60">
+                        <i class="fa-solid fa-book-bookmark text-sm text-amber-400"></i>
+                        <span>GAFT Index</span>
+                    </button>
+                    <button onclick="navigateToPage('journal')" id="nav-item-journal" class="sidebar-nav-btn w-full px-4 py-3 rounded-2xl text-xs font-semibold transition flex items-center gap-3 text-slate-400 hover:text-white hover:bg-slate-900/60">
+                        <i class="fa-solid fa-journal-whills text-sm text-emerald-400"></i>
+                        <span>Progress Journal</span>
+                    </button>
+                </nav>
+            </div>
+
+            <!-- Quick Theme Selector Box on Desktop -->
+            <div class="modern-glass p-3.5 rounded-2xl space-y-2 border border-slate-800">
+                <span class="text-[10px] font-extrabold uppercase tracking-widest text-slate-400 block px-1">UI Color Dynamic Theme</span>
+                <div class="grid grid-cols-4 gap-1.5">
+                    <button onclick="setTheme('fem')" title="Feminizing Theme" class="p-2 rounded-xl bg-pink-500/10 text-pink-400 hover:bg-pink-500/20 text-center font-bold text-xs"><i class="fa-solid fa-venus"></i></button>
+                    <button onclick="setTheme('masc')" title="Masculinizing Theme" class="p-2 rounded-xl bg-sky-500/10 text-sky-400 hover:bg-sky-500/20 text-center font-bold text-xs"><i class="fa-solid fa-mars"></i></button>
+                    <button onclick="setTheme('enby')" title="Non-Binary Theme" class="p-2 rounded-xl bg-purple-500/10 text-purple-400 hover:bg-purple-500/20 text-center font-bold text-xs"><i class="fa-solid fa-genderless"></i></button>
+                    <button onclick="setTheme('neutral')" title="Neutral Theme" class="p-2 rounded-xl bg-teal-500/10 text-teal-400 hover:bg-teal-500/20 text-center font-bold text-xs"><i class="fa-solid fa-circle-dot"></i></button>
+                </div>
+            </div>
+        </aside>
+
+        <div class="flex-1 flex flex-col h-full min-w-0 overflow-hidden relative">
+            
+            <header class="flex-none bg-slate-950/70 backdrop-blur-2xl border-b border-slate-800/80 px-4 sm:px-6 py-3.5 flex items-center justify-between z-30">
+                <div class="flex items-center gap-3">
+                    <div class="lg:hidden w-9 h-9 rounded-xl theme-btn-accent flex items-center justify-center font-black text-sm shadow-md">
+                        <i class="fa-solid fa-shapes"></i>
+                    </div>
+
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <h2 id="header-page-title" class="font-extrabold text-sm sm:text-base text-white tracking-tight">Studio Overview</h2>
+                            <span id="header-theme-badge" class="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider theme-badge-pill">
+                                MtF Hypertrophy
+                            </span>
+                        </div>
+                        <p class="text-[10px] sm:text-xs text-slate-400 font-medium hidden sm:block">NSCA & NASM Accredited Gender-Affirming Biomechanics</p>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-2 sm:gap-3">
+                    <div class="flex lg:hidden items-center gap-1 bg-slate-900/90 p-1 rounded-xl border border-slate-800 text-[10px]">
+                        <button onclick="setTheme('fem')" class="px-2 py-1 rounded-lg text-pink-400 hover:bg-slate-800 font-bold"><i class="fa-solid fa-venus"></i></button>
+                        <button onclick="setTheme('masc')" class="px-2 py-1 rounded-lg text-sky-400 hover:bg-slate-800 font-bold"><i class="fa-solid fa-mars"></i></button>
+                        <button onclick="setTheme('enby')" class="px-2 py-1 rounded-lg text-purple-400 hover:bg-slate-800 font-bold"><i class="fa-solid fa-genderless"></i></button>
+                        <button onclick="setTheme('neutral')" class="px-2 py-1 rounded-lg text-teal-400 hover:bg-slate-800 font-bold"><i class="fa-solid fa-circle-dot"></i></button>
+                    </div>
+
+                    <button onclick="navigateToPage('routine')" class="px-3.5 py-1.5 sm:px-4 sm:py-2 theme-btn-accent font-extrabold rounded-xl text-xs flex items-center gap-2 transition shadow-lg">
+                        <i class="fa-solid fa-play"></i>
+                        <span class="hidden sm:inline">Start Routine</span>
+                    </button>
+                </div>
+            </header>
+
+            <main id="main-scroll-view" class="flex-1 overflow-y-auto custom-scroll p-4 sm:p-6 lg:p-8 space-y-6 pb-28 lg:pb-8">
+                
+                <section id="page-dashboard" class="page-view space-y-6">
+                    
+                    <div id="profile-summary-card" class="modern-glass rounded-3xl p-6 sm:p-8 relative overflow-hidden transition-all duration-300 border border-slate-800">
+                        <div class="absolute -right-16 -top-16 w-64 h-64 rounded-full blur-3xl pointer-events-none opacity-40" style="background: var(--color-accent)"></div>
+                        
+                        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6 relative z-10">
+                            <div class="space-y-3 max-w-3xl">
+                                <div class="flex flex-wrap items-center gap-2">
+                                    <span id="badge-goal" class="px-3 py-1 rounded-full text-[11px] font-extrabold uppercase tracking-wider theme-badge-pill">
+                                        Feminizing Hourglass (MtF)
+                                    </span>
+                                    <span id="badge-lifestyle" class="px-3 py-1 rounded-full text-[11px] font-semibold bg-slate-900/90 text-slate-300 border border-slate-800">
+                                        Soccer Mom / Active Home
+                                    </span>
+                                    <span id="badge-hrt" class="px-3 py-1 rounded-full text-[11px] font-semibold bg-slate-900/90 text-teal-300 border border-teal-500/30">
+                                        GAHT Estrogen Dominant
+                                    </span>
+                                </div>
+                                <h2 id="profile-headline" class="text-2xl sm:text-3xl font-black text-white tracking-tight leading-tight">
+                                    Gluteus Medius & Outer Hip Expansion
+                                </h2>
+                                <p id="profile-subtext" class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                                    Maximizing gluteus medius & outer hip volume while suppressing lateral oblique recruitment to preserve waist taper.
+                                </p>
+                            </div>
+
+                            <button onclick="navigateToPage('profile')" class="flex-none px-5 py-3 modern-glass modern-glass-interactive rounded-2xl text-xs font-extrabold text-white flex items-center justify-center gap-2.5 border border-slate-700">
+                                <i class="fa-solid fa-sliders text-teal-400"></i>
+                                <span>Adjust Archetype</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Bento Cards Row -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                        
+                        <div class="modern-glass modern-glass-interactive p-5 rounded-3xl flex flex-col justify-between space-y-4">
+                            <div class="flex items-center justify-between text-teal-400">
+                                <span class="text-[10px] font-extrabold uppercase tracking-widest text-slate-400">Hormonal Axis</span>
+                                <div class="w-8 h-8 rounded-xl bg-teal-500/10 flex items-center justify-center border border-teal-500/20">
+                                    <i class="fa-solid fa-dna text-xs"></i>
+                                </div>
+                            </div>
+                            <div>
+                                <div id="dash-hrt-status" class="text-base font-black text-white">Estrogen Dominant</div>
+                                <p class="text-[11px] text-slate-400 mt-1">Optimized high-rep hypertrophy response</p>
+                            </div>
+                        </div>
+
+                        <div class="modern-glass modern-glass-interactive p-5 rounded-3xl flex flex-col justify-between space-y-4">
+                            <div class="flex items-center justify-between text-pink-400">
+                                <span class="text-[10px] font-extrabold uppercase tracking-widest text-slate-400">Sculpt Focus</span>
+                                <div class="w-8 h-8 rounded-xl bg-pink-500/10 flex items-center justify-center border border-pink-500/20">
+                                    <i class="fa-solid fa-bullseye text-xs"></i>
+                                </div>
+                            </div>
+                            <div>
+                                <div id="dash-sculpt-target" class="text-base font-black text-white">Glute/Hip Expansion</div>
+                                <p class="text-[11px] text-slate-400 mt-1">Filling outer pelvic hip dips</p>
+                            </div>
+                        </div>
+
+                        <div class="modern-glass modern-glass-interactive p-5 rounded-3xl flex flex-col justify-between space-y-4">
+                            <div class="flex items-center justify-between text-amber-400">
+                                <span class="text-[10px] font-extrabold uppercase tracking-widest text-slate-400">Synergist Guard</span>
+                                <div class="w-8 h-8 rounded-xl bg-amber-500/10 flex items-center justify-center border border-amber-500/20">
+                                    <i class="fa-solid fa-shield-halved text-xs"></i>
+                                </div>
+                            </div>
+                            <div>
+                                <div id="dash-avoid-target" class="text-base font-black text-white">Obliques & Traps</div>
+                                <p class="text-[11px] text-slate-400 mt-1">Prevents waist & neck thickness</p>
+                            </div>
+                        </div>
+
+                        <div class="modern-glass modern-glass-interactive p-5 rounded-3xl flex flex-col justify-between space-y-4">
+                            <div class="flex items-center justify-between text-indigo-400">
+                                <span class="text-[10px] font-extrabold uppercase tracking-widest text-slate-400">Weekly Consistency</span>
+                                <div class="w-8 h-8 rounded-xl bg-indigo-500/10 flex items-center justify-center border border-indigo-500/20">
+                                    <i class="fa-solid fa-fire text-xs"></i>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="flex items-baseline justify-between">
+                                    <div id="dash-streak-count" class="text-xl font-black text-white">4 Days</div>
+                                    <span class="text-[10px] font-extrabold text-indigo-400">80% Target</span>
+                                </div>
+                                <div class="w-full bg-slate-900 h-2 rounded-full mt-2 overflow-hidden p-0.5 border border-slate-800">
+                                    <div class="h-full rounded-full theme-btn-accent w-4/5"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="modern-glass p-5 rounded-3xl border border-teal-500/20 flex flex-col sm:flex-row items-start sm:items-center gap-4">
+                        <div class="p-3.5 bg-teal-500/10 rounded-2xl text-teal-400 flex-none border border-teal-500/20">
+                            <i class="fa-solid fa-certificate text-2xl"></i>
+                        </div>
+                        <div class="space-y-1">
+                            <h3 class="text-xs font-black text-teal-300 uppercase tracking-wider">NSCA & NASM Accredited Body-Contouring Framework</h3>
+                            <p class="text-xs text-slate-300 leading-relaxed">
+                                GAFT protocols combine biomechanical muscle isolation with deliberate synergist suppression. By isolating key target muscle heads while avoiding unwanted hypertrophy in secondary muscles, we re-contour your silhouette regardless of baseline genetics or surgical history.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="modern-glass rounded-3xl p-6 space-y-4">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-800/80 pb-3">
+                            <h3 class="text-sm font-extrabold text-white flex items-center gap-2">
+                                <i class="fa-solid fa-calendar-week text-teal-400"></i>
+                                Weekly Micro-Cycle Routine
+                            </h3>
+                            <span class="text-xs text-slate-400 font-medium">Phase 1: Hypertrophy & Silhouette Sculpting</span>
+                        </div>
+
+                        <div id="weekly-days-list" class="space-y-3">
+                            <!-- Dynamic Days Rendered Here -->
+                        </div>
+                    </div>
+
+                </section>
+
+                <section id="page-profile" class="page-view space-y-6 hidden">
+                    <div class="modern-glass rounded-3xl p-6 sm:p-8 space-y-6">
+                        <div class="border-b border-slate-800 pb-4">
+                            <span class="text-[10px] font-extrabold text-teal-400 uppercase tracking-widest">Configuration Engine</span>
+                            <h2 class="text-xl font-black text-white mt-1">Body Archetype & Transition Target Studio</h2>
+                            <p class="text-xs text-slate-400 mt-1">Custom-tune your workout mechanics, hormonal profile sensitivity, and safety parameters.</p>
+                        </div>
+
+                        <form id="profile-form" onsubmit="saveProfileForm(event)" class="space-y-6">
+                            
+                            <div class="space-y-2">
+                                <label class="block text-xs font-black text-slate-200 uppercase tracking-wider">
+                                    1. UI Color Theme
+                                </label>
+                                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                                    <button type="button" onclick="setTheme('fem')" class="p-3.5 rounded-2xl border border-pink-500/30 bg-pink-500/10 text-pink-300 font-bold text-xs flex items-center justify-center gap-2 hover:bg-pink-500/20 transition">
+                                        <i class="fa-solid fa-venus"></i> Feminizing
+                                    </button>
+                                    <button type="button" onclick="setTheme('masc')" class="p-3.5 rounded-2xl border border-sky-500/30 bg-sky-500/10 text-sky-300 font-bold text-xs flex items-center justify-center gap-2 hover:bg-sky-500/20 transition">
+                                        <i class="fa-solid fa-mars"></i> Masculinizing
+                                    </button>
+                                    <button type="button" onclick="setTheme('enby')" class="p-3.5 rounded-2xl border border-purple-500/30 bg-purple-500/10 text-purple-300 font-bold text-xs flex items-center justify-center gap-2 hover:bg-purple-500/20 transition">
+                                        <i class="fa-solid fa-genderless"></i> Non-Binary
+                                    </button>
+                                    <button type="button" onclick="setTheme('neutral')" class="p-3.5 rounded-2xl border border-teal-500/30 bg-teal-500/10 text-teal-300 font-bold text-xs flex items-center justify-center gap-2 hover:bg-teal-500/20 transition">
+                                        <i class="fa-solid fa-circle-dot"></i> Neutral
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="space-y-2">
+                                <label class="block text-xs font-black text-slate-200 uppercase tracking-wider">
+                                    2. Primary Body Contour Target Archetype
+                                </label>
+                                <select id="select-goal" class="w-full bg-slate-950 border border-slate-800 rounded-2xl p-4 text-xs text-slate-200 focus:border-teal-500 focus:outline-none shadow-inner">
+                                    <option value="mtf-curves">MtF Hourglass (Glutes, Outer Hip-Dip Fill, Soft Upper Frame, Oblique Suppression)</option>
+                                    <option value="ftm-vshape">FtM V-Taper (Broad Lateral Deltoids, Wide Lats, Upper Chest Expansion, Hip Suppression)</option>
+                                    <option value="enby-androgynous">Non-Binary / Androgynous Athletic Proportions (Transverse Core Taper, Anti-Bulking)</option>
+                                    <option value="transfem-hipfill">Transfem High-Volume Gluteus Medius & Outer Hip Accentuation</option>
+                                    <option value="transmasc-torso">Transmasc Upper Torso & Shoulder Broadening (Top-Surgery / Binder Optimized)</option>
+                                    <option value="curvy-affirming">Curvy / Plus-Size Affirming Re-Contouring & Lower Body Lift</option>
+                                    <option value="petite-volume">Petite / Slim Frame Athletic Volume & Lean Muscle Sculpting</option>
+                                    <option value="neutral-posture">Gender-Neutral General Fitness, Core Stability & Posture Realignment</option>
+                                </select>
+                            </div>
+
+                            <div class="space-y-2">
+                                <label class="block text-xs font-black text-slate-200 uppercase tracking-wider">
+                                    3. GAHT / HRT Hormonal Phase Protocol
+                                </label>
+                                <select id="select-hrt" class="w-full bg-slate-950 border border-slate-800 rounded-2xl p-4 text-xs text-slate-200 focus:border-teal-500 focus:outline-none shadow-inner">
+                                    <option value="estrogen-dominant">Estrogen-Dominant GAHT (High-rep lower body hypertrophy window, joint-friendly loading)</option>
+                                    <option value="testosterone-dominant">Testosterone-Dominant GAHT (Upper-body muscle fiber growth response focus)</option>
+                                    <option value="no-hrt-mtf">Pre-GAHT Feminizing (Targeted hip isolation & strict oblique/trap avoidance)</option>
+                                    <option value="no-hrt-ftm">Pre-GAHT Masculinizing (Lat width & shoulder caps to visually taper hips)</option>
+                                    <option value="neutral-hrt">Hormone Neutral / Standard Athletic Conditioning</option>
+                                </select>
+                            </div>
+
+                            <div class="space-y-2">
+                                <label class="block text-xs font-black text-slate-200 uppercase tracking-wider">
+                                    4. Lifestyle Archetype & Daily Schedule
+                                </label>
+                                <select id="select-lifestyle" class="w-full bg-slate-950 border border-slate-800 rounded-2xl p-4 text-xs text-slate-200 focus:border-teal-500 focus:outline-none shadow-inner">
+                                    <option value="soccer-mom">Soccer Mom / Active Parent (30-40 min, mixture of dumbbells & home/gym gear)</option>
+                                    <option value="at-home-mom">At-Home Parent (20-30 min, minimal equipment / loop bands & bodyweight)</option>
+                                    <option value="church-mom">Modest Community Focus (Low impact, modest movement attire focus)</option>
+                                    <option value="athletic">Athletic Competitor (50-60 min, high intensity progressive overload split)</option>
+                                    <option value="average-desk">Desk Worker / Daily Commuter (Anti-slouch upper posture & hip flexor release)</option>
+                                    <option value="express-20">Express 20-Minute Daily Sculpt (Tight schedule focused isolation)</option>
+                                </select>
+                            </div>
+
+                            <div class="space-y-2">
+                                <label class="block text-xs font-black text-slate-200 uppercase tracking-wider">
+                                    5. Safety & Recovery Guidelines
+                                </label>
+                                <div class="space-y-3 text-xs bg-slate-950 p-4 rounded-2xl border border-slate-800">
+                                    <label class="flex items-center gap-3 text-slate-300 cursor-pointer">
+                                        <input type="checkbox" id="check-binder" class="w-4 h-4 rounded bg-slate-900 border-slate-700 text-teal-500 focus:ring-0">
+                                        <span>Binder-Safe Protocol (Prevents extreme chest compression, integrates diaphragm breathing)</span>
+                                    </label>
+                                    <label class="flex items-center gap-3 text-slate-300 cursor-pointer">
+                                        <input type="checkbox" id="check-top-surgery" class="w-4 h-4 rounded bg-slate-900 border-slate-700 text-teal-500 focus:ring-0">
+                                        <span>Post Top-Surgery Guidelines (Gentle pectoral mobility & scar tissue protection)</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="pt-2 flex justify-end">
+                                <button type="submit" class="w-full sm:w-auto px-8 py-3.5 theme-btn-accent font-black text-xs rounded-2xl shadow-xl flex items-center justify-center gap-2">
+                                    <i class="fa-solid fa-floppy-disk"></i>
+                                    Save & Apply Archetype
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </section>
+
+                <section id="page-routine" class="page-view space-y-6 hidden">
+                    <div class="modern-glass rounded-3xl p-6 sm:p-8 space-y-6">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800 pb-5">
+                            <div>
+                                <span class="text-[10px] font-extrabold text-teal-400 uppercase tracking-widest" id="workout-day-title">Day 1 Focus</span>
+                                <h2 class="text-2xl font-black text-white tracking-tight mt-0.5" id="workout-main-heading">Lower Body Glute-Medius Expansion</h2>
+                                <p class="text-xs text-slate-400 mt-1" id="workout-subheading">45 Mins • High Isolation Hypertrophy • Oblique Suppression</p>
+                            </div>
+                            <button id="start-workout-btn" onclick="toggleActiveWorkout()" class="px-6 py-3 theme-btn-accent font-black text-xs rounded-2xl transition flex items-center justify-center gap-2.5 shadow-xl">
+                                <i class="fa-solid fa-play"></i> <span id="start-btn-label">Start Guided Session</span>
+                            </button>
+                        </div>
+
+                        <!-- Active Workout Timer Bar -->
+                        <div id="active-timer-card" class="hidden bg-slate-950 p-5 rounded-3xl border border-teal-500/40 flex flex-wrap items-center justify-between gap-4 shadow-xl">
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 rounded-2xl bg-teal-500/20 text-teal-300 flex items-center justify-center font-bold text-lg border border-teal-500/30 animate-pulse-glow">
+                                    <i class="fa-solid fa-stopwatch"></i>
+                                </div>
+                                <div>
+                                    <div class="text-[10px] font-extrabold text-slate-400 uppercase tracking-wider">Session Elapsed Time</div>
+                                    <div id="timer-display" class="text-3xl font-black font-mono text-teal-300 tracking-tight">00:00</div>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <button onclick="triggerRestTimer(60)" class="px-4 py-2.5 bg-slate-900 hover:bg-slate-800 text-slate-200 text-xs font-bold rounded-2xl border border-slate-800 flex items-center gap-2">
+                                    <i class="fa-solid fa-hourglass-half text-amber-400"></i> Rest 60s
+                                </button>
+                                <button onclick="finishWorkout()" class="px-5 py-2.5 theme-btn-accent font-black text-xs rounded-2xl shadow-md transition">
+                                    Complete Session
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Rest Timer Popdown Bar -->
+                        <div id="rest-timer-box" class="hidden bg-amber-500/15 border border-amber-500/30 p-4 rounded-2xl flex items-center justify-between text-amber-200 text-xs font-semibold">
+                            <span class="flex items-center gap-2.5">
+                                <i class="fa-solid fa-rotate text-amber-400 animate-spin"></i>
+                                <span id="rest-status-text">Rest Interval: 60s remaining</span>
+                            </span>
+                            <button onclick="skipRest()" class="text-amber-400 hover:text-amber-300 underline text-xs font-bold">Skip Rest</button>
+                        </div>
+
+                        <div id="routine-exercises-list" class="space-y-4">
+                            <!-- Dynamic Routine Cards -->
+                        </div>
+                    </div>
+                </section>
+
+                <section id="page-sculpt" class="page-view space-y-6 hidden">
+                    <div class="modern-glass rounded-3xl p-6 sm:p-8 space-y-6">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                            <div>
+                                <span class="text-[10px] font-extrabold text-teal-400 uppercase tracking-widest">Interactive Silhouette</span>
+                                <h2 class="text-xl font-black text-white mt-0.5">Visual GAFT Body Contour Engine</h2>
+                                <p class="text-xs text-slate-300 mt-1">Select anatomical zones on the silhouette below to review isolation principles and synergist rules.</p>
+                            </div>
+                            <div class="flex items-center gap-2 bg-slate-950 p-1 rounded-2xl border border-slate-800">
+                                <button onclick="toggleBodyView('front')" id="btn-view-front" class="px-4 py-2 rounded-xl text-xs font-extrabold bg-slate-800 text-slate-200 border border-slate-700">Front View</button>
+                                <button onclick="toggleBodyView('back')" id="btn-view-back" class="px-4 py-2 rounded-xl text-xs font-extrabold bg-slate-900 text-slate-400 border border-transparent">Back View</button>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 pt-2">
+                            <div class="bg-slate-950 p-6 rounded-3xl border border-slate-800 flex flex-col items-center justify-center relative min-h-[380px] shadow-inner">
+                                <span class="text-[10px] font-extrabold uppercase tracking-widest text-slate-500 absolute top-4 left-4">Anatomical Heatmap</span>
+                                
+                                <!-- Front View SVG Diagram -->
+                                <svg id="svg-body-front" class="w-52 h-84 my-2 transition-all duration-300" viewBox="0 0 200 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <circle cx="100" cy="35" r="18" fill="#1e293b" stroke="#334155" stroke-width="2"/>
+                                    <path id="svg-traps" onclick="selectSculptZone('traps')" class="muscle-zone" d="M85 52 L115 52 L125 68 L75 68 Z" fill="#475569" />
+                                    <circle id="svg-delts-l" onclick="selectSculptZone('delts')" class="muscle-zone" cx="62" cy="78" r="14" fill="#38bdf8" />
+                                    <circle id="svg-delts-r" onclick="selectSculptZone('delts')" class="muscle-zone" cx="138" cy="78" r="14" fill="#38bdf8" />
+                                    <path id="svg-chest" onclick="selectSculptZone('chest')" class="muscle-zone" d="M72 72 H128 V100 H72 Z" fill="#64748b" rx="4" />
+                                    <path id="svg-obliques" onclick="selectSculptZone('obliques')" class="muscle-zone" d="M78 105 H122 L115 155 H85 Z" fill="#f59e0b" />
+                                    <path id="svg-hipdips-l" onclick="selectSculptZone('hipdips')" class="muscle-zone" d="M60 155 Q48 185 70 215 L100 215 L100 155 Z" fill="#ec4899" />
+                                    <path id="svg-hipdips-r" onclick="selectSculptZone('hipdips')" class="muscle-zone" d="M140 155 Q152 185 130 215 L100 215 L100 155 Z" fill="#ec4899" />
+                                    <rect id="svg-quads-l" onclick="selectSculptZone('quads')" class="muscle-zone" x="70" y="220" width="26" height="110" rx="8" fill="#3b82f6" />
+                                    <rect id="svg-quads-r" onclick="selectSculptZone('quads')" class="muscle-zone" x="104" y="220" width="26" height="110" rx="8" fill="#3b82f6" />
+                                </svg>
+
+                                <!-- Back View SVG Diagram -->
+                                <svg id="svg-body-back" class="w-52 h-84 my-2 hidden transition-all duration-300" viewBox="0 0 200 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <circle cx="100" cy="35" r="18" fill="#1e293b" stroke="#334155" stroke-width="2"/>
+                                    <path id="svg-lats" onclick="selectSculptZone('lats')" class="muscle-zone" d="M68 70 L132 70 L120 140 L80 140 Z" fill="#6366f1" />
+                                    <ellipse id="svg-glute-max-l" onclick="selectSculptZone('hipdips')" class="muscle-zone" cx="80" cy="180" rx="20" ry="25" fill="#ec4899" />
+                                    <ellipse id="svg-glute-max-r" onclick="selectSculptZone('hipdips')" class="muscle-zone" cx="120" cy="180" rx="20" ry="25" fill="#ec4899" />
+                                    <rect id="svg-hams-l" onclick="selectSculptZone('quads')" class="muscle-zone" x="70" y="215" width="26" height="110" rx="8" fill="#3b82f6" />
+                                    <rect id="svg-hams-r" onclick="selectSculptZone('quads')" class="muscle-zone" x="104" y="215" width="26" height="110" rx="8" fill="#3b82f6" />
+                                </svg>
+
+                                <div class="flex flex-wrap justify-center items-center gap-4 text-[11px] font-semibold mt-3">
+                                    <span class="flex items-center gap-1.5 text-pink-400"><i class="fa-solid fa-circle text-[8px]"></i> Target Isolation</span>
+                                    <span class="flex items-center gap-1.5 text-amber-400"><i class="fa-solid fa-circle text-[8px]"></i> Avoid Thickness</span>
+                                    <span class="flex items-center gap-1.5 text-sky-400"><i class="fa-solid fa-circle text-[8px]"></i> Frame Accent</span>
+                                </div>
+                            </div>
+
+                            <div id="sculpt-info-panel" class="bg-slate-900/90 p-6 rounded-3xl border border-slate-800 flex flex-col justify-between space-y-6">
+                                <div>
+                                    <span id="zone-badge" class="px-3 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-wider theme-badge-pill">
+                                        Target Zone: Gluteus Medius & Outer Hips
+                                    </span>
+                                    <h3 id="zone-title" class="text-xl font-black text-white mt-3">Gluteus Medius Expansion</h3>
+                                    <p id="zone-desc" class="text-xs text-slate-300 mt-2 leading-relaxed">
+                                        Developing the gluteus medius creates visual width at the top of the pelvis, filling in hip dips and sculpting an exaggerated lower-body silhouette without adding waist thickness.
+                                    </p>
+                                    
+                                    <div class="mt-5 space-y-3">
+                                        <div class="p-3.5 rounded-2xl bg-slate-950 border border-slate-800">
+                                            <div class="text-[10px] font-extrabold text-teal-400 uppercase tracking-wider">Primary Isolation Movements</div>
+                                            <div id="zone-exercises" class="text-xs text-slate-200 mt-1 font-semibold">
+                                                Cable Standing Hip Abductions, Clamshells with resistance loop, Deficit Reverse Lunges.
+                                            </div>
+                                        </div>
+
+                                        <div class="p-3.5 rounded-2xl bg-slate-950 border border-slate-800">
+                                            <div class="text-[10px] font-extrabold text-amber-400 uppercase tracking-wider">Synergist Avoidance Rule</div>
+                                            <div id="zone-avoid-cue" class="text-xs text-slate-200 mt-1">
+                                                Avoid leaning forward or twisting pelvis during abduction to keep momentum off the Tensor Fasciae Latae (TFL).
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <button onclick="filterLibraryByZone()" class="w-full py-3 bg-slate-800 hover:bg-slate-700 text-slate-100 text-xs font-bold rounded-2xl border border-slate-700 transition flex items-center justify-center gap-2">
+                                    <i class="fa-solid fa-magnifying-glass-plus text-teal-400"></i> Search Target Movements in Index
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="page-library" class="page-view space-y-6 hidden">
+                    <div class="modern-glass rounded-3xl p-6 sm:p-8 space-y-6">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                            <div>
+                                <span class="text-[10px] font-extrabold text-teal-400 uppercase tracking-widest">Movement Library</span>
+                                <h2 class="text-xl font-black text-white mt-0.5">GAFT Accredited Movement Index</h2>
+                                <p class="text-xs text-slate-400 mt-1">Search mechanics specifically indexed for transition body contouring.</p>
+                            </div>
+                            <div>
+                                <input type="text" id="library-search" oninput="filterExerciseLibrary()" placeholder="Search movements..." class="px-4 py-3 bg-slate-950 border border-slate-800 rounded-2xl text-xs text-slate-200 focus:outline-none focus:border-teal-500 w-full sm:w-60 shadow-inner">
+                            </div>
+                        </div>
+
+                        <div class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1 text-xs">
+                            <button onclick="setLibFilter('all')" class="lib-filter-btn active px-4 py-2 rounded-xl bg-teal-500 text-slate-950 font-bold whitespace-nowrap">All Movements</button>
+                            <button onclick="setLibFilter('feminizing')" class="lib-filter-btn px-4 py-2 rounded-xl bg-slate-900 text-slate-300 hover:text-white border border-slate-800 whitespace-nowrap">MtF Sculpting</button>
+                            <button onclick="setLibFilter('masculinizing')" class="lib-filter-btn px-4 py-2 rounded-xl bg-slate-900 text-slate-300 hover:text-white border border-slate-800 whitespace-nowrap">FtM V-Taper</button>
+                            <button onclick="setLibFilter('neutral')" class="lib-filter-btn px-4 py-2 rounded-xl bg-slate-900 text-slate-300 hover:text-white border border-slate-800 whitespace-nowrap">Enby / Core Taper</button>
+                            <button onclick="setLibFilter('post-surgery')" class="lib-filter-btn px-4 py-2 rounded-xl bg-slate-900 text-slate-300 hover:text-white border border-slate-800 whitespace-nowrap">Top-Surgery Safe</button>
+                        </div>
+
+                        <div id="library-cards-container" class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                            <!-- Dynamic Cards -->
+                        </div>
+                    </div>
+                </section>
+
+                <section id="page-journal" class="page-view space-y-6 hidden">
+                    <div class="modern-glass rounded-3xl p-6 sm:p-8 space-y-6">
+                        <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+                            <div>
+                                <span class="text-[10px] font-extrabold text-teal-400 uppercase tracking-widest">History & Notes</span>
+                                <h2 class="text-xl font-black text-white mt-0.5">Workout Log & Notes History</h2>
+                            </div>
+                            <button onclick="clearAllNotes()" class="text-xs text-rose-400 hover:underline font-bold">
+                                Clear All Logs
+                            </button>
+                        </div>
+
+                        <div id="notes-journal-container" class="space-y-3 max-h-[60vh] overflow-y-auto custom-scroll pr-1">
+                            <!-- Dynamic Notes Rendered Here -->
+                        </div>
+                    </div>
+                </section>
+
+            </main>
+
+            <div class="lg:hidden fixed bottom-3 left-4 right-4 z-40">
+                <nav class="modern-glass p-2 rounded-2xl flex items-center justify-around border border-slate-700/80 shadow-2xl">
+                    <button onclick="navigateToPage('dashboard')" id="mobile-nav-dashboard" class="mobile-nav-btn active flex flex-col items-center justify-center p-2 rounded-xl text-teal-400 transition">
+                        <i class="fa-solid fa-chart-pie text-base"></i>
+                        <span class="text-[9px] font-bold mt-0.5">Studio</span>
+                    </button>
+                    <button onclick="navigateToPage('profile')" id="mobile-nav-profile" class="mobile-nav-btn flex flex-col items-center justify-center p-2 rounded-xl text-slate-400 transition">
+                        <i class="fa-solid fa-sliders text-base"></i>
+                        <span class="text-[9px] font-bold mt-0.5">Config</span>
+                    </button>
+                    <button onclick="navigateToPage('routine')" id="mobile-nav-routine" class="mobile-nav-btn flex flex-col items-center justify-center p-2 rounded-xl text-slate-400 transition">
+                        <i class="fa-solid fa-dumbbell text-base"></i>
+                        <span class="text-[9px] font-bold mt-0.5">Routine</span>
+                    </button>
+                    <button onclick="navigateToPage('sculpt')" id="mobile-nav-sculpt" class="mobile-nav-btn flex flex-col items-center justify-center p-2 rounded-xl text-slate-400 transition">
+                        <i class="fa-solid fa-child-reaching text-base"></i>
+                        <span class="text-[9px] font-bold mt-0.5">Contour</span>
+                    </button>
+                    <button onclick="navigateToPage('library')" id="mobile-nav-library" class="mobile-nav-btn flex flex-col items-center justify-center p-2 rounded-xl text-slate-400 transition">
+                        <i class="fa-solid fa-book-bookmark text-base"></i>
+                        <span class="text-[9px] font-bold mt-0.5">Index</span>
+                    </button>
+                </nav>
+            </div>
+
+            <div class="hidden lg:block fixed bottom-0 left-72 right-0 z-30 bg-slate-950/90 backdrop-blur-xl border-t border-slate-800/80 px-8 py-3">
+                <div class="max-w-5xl mx-auto flex items-center gap-3">
+                    <div class="relative flex-1">
+                        <input type="text" 
+                               id="sticky-note-input" 
+                               placeholder="Log a quick set or feedback (e.g., 'Outer glutes burned on set 3')..." 
+                               class="w-full pl-10 pr-12 py-3 bg-slate-900 border border-slate-800 focus:border-teal-500 rounded-2xl text-xs text-slate-100 placeholder-slate-500 focus:outline-none transition shadow-inner"
+                               onkeydown="if(event.key === 'Enter') saveQuickNote()">
+                        <i class="fa-solid fa-pen-to-square absolute left-4 top-3.5 text-slate-500 text-xs"></i>
+                        <button onclick="saveQuickNote()" class="absolute right-3 top-2.5 p-1 text-teal-400 hover:text-teal-300 text-xs font-bold">
+                            <i class="fa-solid fa-paper-plane"></i>
+                        </button>
+                    </div>
+                    
+                    <button onclick="navigateToPage('journal')" class="px-4 py-3 bg-slate-900 hover:bg-slate-800 text-slate-300 rounded-2xl border border-slate-800 text-xs font-semibold flex items-center gap-2 flex-none">
+                        <i class="fa-solid fa-journal-whills text-teal-400"></i>
+                        <span>Logs</span>
+                        <span id="notes-count-badge" class="px-2 py-0.5 rounded-full theme-badge-pill text-[10px] font-bold">0</span>
+                    </button>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <script>
+        const state = {
+            theme: 'fem', // 'fem', 'masc', 'enby', 'neutral'
+            currentPage: 'dashboard',
+            profile: {
+                goal: 'mtf-curves',
+                hrt: 'estrogen-dominant',
+                lifestyle: 'soccer-mom',
+                binderSafe: false,
+                topSurgery: false
+            },
+            isWorkoutActive: false,
+            workoutSeconds: 0,
+            timerInterval: null,
+            restInterval: null,
+            quickNotes: [],
+            exerciseLibrary: [
+                {
+                    id: 'ex-1',
+                    name: 'Cable Standing Hip Abduction',
+                    category: 'feminizing',
+                    target: 'Gluteus Medius & Outer Hip Fill',
+                    avoid: 'Tensor Fasciae Latae (TFL)',
+                    accreditation: 'NASM Hypertrophy & Taper Protocol',
+                    cues: 'Keep torso stationary, lead movement with heel slightly turned upward, avoid swinging back.',
+                    tags: ['hipdips', 'glutes', 'hourglass']
+                },
+                {
+                    id: 'ex-2',
+                    name: 'Deficit Reverse Lunge',
+                    category: 'feminizing',
+                    target: 'Gluteus Maximus & Upper Hamstrings',
+                    avoid: 'Quad Dominance Recruitment',
+                    accreditation: 'NSCA Biomechanics Standard',
+                    cues: 'Hinge slightly forward at hip to load weight entirely onto the front glute.',
+                    tags: ['glutes', 'legs']
+                },
+                {
+                    id: 'ex-3',
+                    name: 'Wide-Grip Lat Pulldown',
+                    category: 'masculinizing',
+                    target: 'Latissimus Dorsi (V-Taper Broadening)',
+                    avoid: 'Upper Trapezius Shrug',
+                    accreditation: 'NSCA Hypertrophy Standard',
+                    cues: 'Pull elbows down toward back pockets to create back width while keeping neck relaxed.',
+                    tags: ['lats', 'vshape', 'back']
+                },
+                {
+                    id: 'ex-4',
+                    name: 'Seated Dumbbell Lateral Raise',
+                    category: 'masculinizing',
+                    target: 'Lateral Deltoids (Shoulder Cap)',
+                    avoid: 'Upper Trapezius Elevation',
+                    accreditation: 'NASM Upper Body Isolation',
+                    cues: 'Pour pitch from pinky at peak, keep shoulders pinned down.',
+                    tags: ['delts', 'shoulders']
+                },
+                {
+                    id: 'ex-5',
+                    name: 'Stomach Vacuum Core Taper',
+                    category: 'neutral',
+                    target: 'Transverse Abdominis (Waist Slimming)',
+                    avoid: 'External Oblique Hypertrophy',
+                    accreditation: 'Core Taper Mechanics',
+                    cues: 'Exhale fully, pull navel toward spine without flexing outer rectus abs.',
+                    tags: ['waist', 'obliques', 'neutral']
+                },
+                {
+                    id: 'ex-6',
+                    name: 'Incline Dumbbell Chest Press',
+                    category: 'post-surgery',
+                    target: 'Upper Pectoralis Major',
+                    avoid: 'Over-stretching surgical scar tissue',
+                    accreditation: 'Post-Op Physical Therapy Standard',
+                    cues: 'Lower dumbbells with controlled 3-second eccentric phase. Maintain binder-safe diaphragm breathing.',
+                    tags: ['chest', 'post-surgery', 'binder-safe']
+                }
+            ]
+        };
+
+        window.addEventListener('DOMContentLoaded', () => {
+            loadFromLocalStorage();
+            applyTheme(state.theme);
+            applyProfileToUI();
+            renderWeeklyPlan();
+            renderExerciseLibrary();
+            renderJournalNotes();
+        });
+
+        function navigateToPage(pageId) {
+            state.currentPage = pageId;
+
+            // Hide all pages
+            document.querySelectorAll('.page-view').forEach(p => p.classList.add('hidden'));
+            
+            // Show target page
+            const target = document.getElementById(`page-${pageId}`);
+            if (target) target.classList.remove('hidden');
+
+            // Update Desktop Sidebar Highlight
+            document.querySelectorAll('.sidebar-nav-btn').forEach(btn => {
+                btn.className = "sidebar-nav-btn w-full px-4 py-3 rounded-2xl text-xs font-semibold transition flex items-center gap-3 text-slate-400 hover:text-white hover:bg-slate-900/60";
+            });
+            const activeSidebarBtn = document.getElementById(`nav-item-${pageId}`);
+            if (activeSidebarBtn) {
+                activeSidebarBtn.className = "sidebar-nav-btn active w-full px-4 py-3 rounded-2xl text-xs font-bold transition flex items-center gap-3 bg-slate-900 border border-slate-800 text-white";
+            }
+
+            // Update Mobile Bottom Nav Highlight
+            document.querySelectorAll('.mobile-nav-btn').forEach(btn => {
+                btn.className = "mobile-nav-btn flex flex-col items-center justify-center p-2 rounded-xl text-slate-400 transition";
+            });
+            const activeMobileBtn = document.getElementById(`mobile-nav-${pageId}`);
+            if (activeMobileBtn) {
+                activeMobileBtn.className = "mobile-nav-btn active flex flex-col items-center justify-center p-2 rounded-xl text-teal-400 transition";
+            }
+
+            // Update Header Breadcrumb Title
+            const pageTitles = {
+                'dashboard': 'Studio Overview',
+                'profile': 'Body Archetype Config',
+                'routine': "Today's Guided Routine",
+                'sculpt': 'Visual Body Contour Map',
+                'library': 'Accredited Movement Index',
+                'journal': 'Workout History & Logs'
+            };
+            const headerTitle = document.getElementById('header-page-title');
+            if (headerTitle) headerTitle.textContent = pageTitles[pageId] || 'Studio Overview';
+
+            if (pageId === 'routine') {
+                renderRoutineExercises();
+            } else if (pageId === 'journal') {
+                renderJournalNotes();
+            }
+        }
+
+        function setTheme(themeKey) {
+            state.theme = themeKey;
+            document.documentElement.setAttribute('data-theme', themeKey);
+            saveToLocalStorage();
+            applyProfileToUI();
+        }
+
+        function applyTheme(themeKey) {
+            setTheme(themeKey);
+        }
+
+        function saveProfileForm(e) {
+            e.preventDefault();
+            state.profile.goal = document.getElementById('select-goal').value;
+            state.profile.hrt = document.getElementById('select-hrt').value;
+            state.profile.lifestyle = document.getElementById('select-lifestyle').value;
+            state.profile.binderSafe = document.getElementById('check-binder').checked;
+            state.profile.topSurgery = document.getElementById('check-top-surgery').checked;
+
+            saveToLocalStorage();
+            applyProfileToUI();
+            renderWeeklyPlan();
+            navigateToPage('dashboard');
+
+            confetti({ particleCount: 70, spread: 80, origin: { y: 0.8 } });
+        }
+
+        function applyProfileToUI() {
+            const goalBadge = document.getElementById('badge-goal');
+            const headline = document.getElementById('profile-headline');
+            const subtext = document.getElementById('profile-subtext');
+            const hrtStatus = document.getElementById('dash-hrt-status');
+            const targetSculpt = document.getElementById('dash-sculpt-target');
+            const headerBadge = document.getElementById('header-theme-badge');
+
+            // Set inputs to match state
+            const selGoal = document.getElementById('select-goal');
+            if (selGoal) selGoal.value = state.profile.goal;
+            const selHrt = document.getElementById('select-hrt');
+            if (selHrt) selHrt.value = state.profile.hrt;
+            const selLife = document.getElementById('select-lifestyle');
+            if (selLife) selLife.value = state.profile.lifestyle;
+            
+            const chkBinder = document.getElementById('check-binder');
+            if (chkBinder) chkBinder.checked = state.profile.binderSafe;
+            const chkSurgery = document.getElementById('check-top-surgery');
+            if (chkSurgery) chkSurgery.checked = state.profile.topSurgery;
+
+            if (state.profile.goal.includes('mtf') || state.profile.goal.includes('transfem')) {
+                goalBadge.textContent = 'Feminizing Hourglass (MtF)';
+                headline.textContent = 'Gluteus Medius & Outer Hip Expansion';
+                subtext.textContent = 'Maximizing gluteus medius/maximus while suppressing heavy lateral oblique recruitment to accentuate waist taper.';
+                targetSculpt.textContent = 'Glute & Hip Dip Fill';
+                if (headerBadge) headerBadge.textContent = 'MtF Hypertrophy';
+            } else if (state.profile.goal.includes('ftm') || state.profile.goal.includes('transmasc')) {
+                goalBadge.textContent = 'Masculinizing V-Taper (FtM)';
+                headline.textContent = 'Upper Body V-Taper & Shoulder Broadening';
+                subtext.textContent = 'Targeting lateral delts, lats, and upper chest to visually widen shoulders relative to hips.';
+                targetSculpt.textContent = 'Lat & Delt Broadening';
+                if (headerBadge) headerBadge.textContent = 'FtM V-Taper';
+            } else if (state.profile.goal.includes('enby')) {
+                goalBadge.textContent = 'Non-Binary Androgynous Tone';
+                headline.textContent = 'Core Taper & Balanced Proportions';
+                subtext.textContent = 'Transverse abdominal slimming combined with balanced shoulder and hip stability.';
+                targetSculpt.textContent = 'Balanced Core Taper';
+                if (headerBadge) headerBadge.textContent = 'Enby Androgynous';
+            } else {
+                goalBadge.textContent = 'Neutral Body Sculpting';
+                headline.textContent = 'Balanced Athletic Alignment & Posture';
+                subtext.textContent = 'Functional posture alignment, hip mobility, and balanced muscle tone.';
+                targetSculpt.textContent = 'Full Frame Balance';
+                if (headerBadge) headerBadge.textContent = 'Neutral Athletic';
+            }
+
+            if (state.profile.hrt.includes('estrogen')) {
+                hrtStatus.textContent = 'Estrogen Dominant';
+            } else if (state.profile.hrt.includes('testosterone')) {
+                hrtStatus.textContent = 'Testosterone Dominant';
+            } else {
+                hrtStatus.textContent = 'Neutral Protocol';
+            }
+
+            document.getElementById('badge-lifestyle').textContent = getLifestyleLabel(state.profile.lifestyle);
+        }
+
+        function getLifestyleLabel(key) {
+            const map = {
+                'soccer-mom': 'Soccer Mom / Active Home',
+                'at-home-mom': 'At-Home Parent (Minimal Gear)',
+                'church-mom': 'Modest Community Split',
+                'athletic': 'Athletic Competitor Split',
+                'average-desk': 'Desk / Anti-Slouch Alignment',
+                'express-20': 'Express 20-Min Sculpt'
+            };
+            return map[key] || 'Active Profile';
+        }
+
+        function renderWeeklyPlan() {
+            const list = document.getElementById('weekly-days-list');
+            if (!list) return;
+
+            const days = [
+                { day: 'Day 1', title: 'Primary Hypertrophy: Target Muscle Head Isolation', time: '35 mins', tag: 'Primary Focus' },
+                { day: 'Day 2', title: 'Active Core Taper & Anti-Slouch Vacuum Flow', time: '25 mins', tag: 'Recovery Flow' },
+                { day: 'Day 3', title: 'Aesthetic Frame Sculpting (Upper/Lower Balance)', time: '40 mins', tag: 'Aesthetic Frame' },
+                { day: 'Day 4', title: 'Rest & Myofascial Hip Mobility Protocol', time: '20 mins', tag: 'Rest' },
+                { day: 'Day 5', title: 'Contour Refinement & Diaphragm Compression', time: '35 mins', tag: 'Contour Focus' }
+            ];
+
+            list.innerHTML = days.map((d, idx) => `
+                <div class="p-4 bg-slate-950/90 rounded-2xl border border-slate-800 flex items-center justify-between hover:border-slate-700 transition">
+                    <div class="flex items-center gap-3.5">
+                        <div class="w-9 h-9 rounded-xl theme-badge-pill font-black text-xs flex items-center justify-center">
+                            ${idx + 1}
+                        </div>
+                        <div>
+                            <div class="text-xs font-bold text-slate-100">${d.title}</div>
+                            <div class="text-[10px] text-slate-400 mt-0.5">${d.day} • ${d.time} • <span class="text-teal-400 font-semibold">${d.tag}</span></div>
+                        </div>
+                    </div>
+                    <button onclick="navigateToPage('routine')" class="px-3.5 py-1.5 bg-slate-900 hover:bg-slate-800 text-teal-300 text-xs font-bold rounded-xl border border-slate-800 transition">
+                        Launch
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        function renderRoutineExercises() {
+            const container = document.getElementById('routine-exercises-list');
+            if (!container) return;
+
+            const exercises = state.exerciseLibrary.slice(0, 4);
+
+            container.innerHTML = exercises.map((ex, i) => `
+                <div class="p-5 bg-slate-950/90 rounded-2xl border border-slate-800 space-y-3.5">
+                    <div class="flex items-start justify-between">
+                        <div>
+                            <span class="text-[10px] font-extrabold text-teal-400 uppercase tracking-wider">Exercise ${i + 1}</span>
+                            <h4 class="text-sm font-bold text-white mt-0.5">${ex.name}</h4>
+                            <p class="text-[11px] text-slate-400 mt-0.5">Primary Target: <span class="text-pink-300 font-semibold">${ex.target}</span></p>
+                        </div>
+                        <span class="px-3 py-1 bg-slate-900 border border-slate-800 rounded-xl text-[10px] text-slate-200 font-extrabold">
+                            3 Sets x 12 Reps
+                        </span>
+                    </div>
+
+                    <div class="bg-slate-900 p-3.5 rounded-xl border border-slate-800 text-[11px] text-slate-300 space-y-1">
+                        <div class="flex items-center gap-1.5 text-amber-400 font-extrabold text-[10px] uppercase">
+                            <i class="fa-solid fa-triangle-exclamation"></i> Synergist Avoidance Rule
+                        </div>
+                        <div>${ex.avoid}</div>
+                    </div>
+
+                    <div class="flex items-center justify-between pt-1">
+                        <span class="text-[10px] text-slate-500 italic"><i class="fa-solid fa-certificate"></i> ${ex.accreditation}</span>
+                        <button onclick="logCompletedSet('${ex.name}')" class="px-3.5 py-1.5 bg-slate-900 hover:bg-teal-500/20 text-slate-200 hover:text-teal-300 rounded-xl text-xs font-bold transition border border-slate-800 flex items-center gap-1.5">
+                            <i class="fa-solid fa-check text-teal-400"></i> Mark Set Done
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function toggleActiveWorkout() {
+            state.isWorkoutActive = !state.isWorkoutActive;
+            const timerCard = document.getElementById('active-timer-card');
+            const startBtnLabel = document.getElementById('start-btn-label');
+
+            if (state.isWorkoutActive) {
+                timerCard.classList.remove('hidden');
+                startBtnLabel.textContent = 'Pause Session';
+                state.timerInterval = setInterval(() => {
+                    state.workoutSeconds++;
+                    updateTimerUI();
+                }, 1000);
+            } else {
+                clearInterval(state.timerInterval);
+                startBtnLabel.textContent = 'Resume Session';
+            }
+        }
+
+        function updateTimerUI() {
+            const mins = Math.floor(state.workoutSeconds / 60).toString().padStart(2, '0');
+            const secs = (state.workoutSeconds % 60).toString().padStart(2, '0');
+            document.getElementById('timer-display').textContent = `${mins}:${secs}`;
+        }
+
+        function triggerRestTimer(seconds) {
+            const restBox = document.getElementById('rest-timer-box');
+            const statusText = document.getElementById('rest-status-text');
+            restBox.classList.remove('hidden');
+
+            let remaining = seconds;
+            statusText.textContent = `Rest Interval: ${remaining}s remaining`;
+
+            if (state.restInterval) clearInterval(state.restInterval);
+
+            state.restInterval = setInterval(() => {
+                remaining--;
+                if (remaining <= 0) {
+                    clearInterval(state.restInterval);
+                    restBox.classList.add('hidden');
+                } else {
+                    statusText.textContent = `Rest Interval: ${remaining}s remaining`;
+                }
+            }, 1000);
+        }
+
+        function skipRest() {
+            if (state.restInterval) clearInterval(state.restInterval);
+            document.getElementById('rest-timer-box').classList.add('hidden');
+        }
+
+        function finishWorkout() {
+            clearInterval(state.timerInterval);
+            state.isWorkoutActive = false;
+            document.getElementById('active-timer-card').classList.add('hidden');
+            document.getElementById('start-btn-label').textContent = 'Start Guided Session';
+            
+            confetti({ particleCount: 110, spread: 90, origin: { y: 0.6 } });
+            saveQuickNoteSystem(`Completed ${Math.floor(state.workoutSeconds / 60)} min workout session on ${new Date().toLocaleDateString()}`);
+            state.workoutSeconds = 0;
+            updateTimerUI();
+        }
+
+        function logCompletedSet(exName) {
+            saveQuickNoteSystem(`Logged set completion for: ${exName}`);
+        }
+
+        function toggleBodyView(view) {
+            const frontSvg = document.getElementById('svg-body-front');
+            const backSvg = document.getElementById('svg-body-back');
+            const btnFront = document.getElementById('btn-view-front');
+            const btnBack = document.getElementById('btn-view-back');
+
+            if (view === 'front') {
+                frontSvg.classList.remove('hidden');
+                backSvg.classList.add('hidden');
+                btnFront.className = "px-4 py-2 rounded-xl text-xs font-extrabold bg-slate-800 text-slate-200 border border-slate-700";
+                btnBack.className = "px-4 py-2 rounded-xl text-xs font-extrabold bg-slate-900 text-slate-400 border border-transparent";
+            } else {
+                frontSvg.classList.add('hidden');
+                backSvg.classList.remove('hidden');
+                btnBack.className = "px-4 py-2 rounded-xl text-xs font-extrabold bg-slate-800 text-slate-200 border border-slate-700";
+                btnFront.className = "px-4 py-2 rounded-xl text-xs font-extrabold bg-slate-900 text-slate-400 border border-transparent";
+            }
+        }
+
+        function selectSculptZone(zoneKey) {
+            const title = document.getElementById('zone-title');
+            const desc = document.getElementById('zone-desc');
+            const badge = document.getElementById('zone-badge');
+            const exercises = document.getElementById('zone-exercises');
+            const avoidCue = document.getElementById('zone-avoid-cue');
+
+            if (zoneKey === 'hipdips') {
+                badge.textContent = 'Target Zone: Outer Hip Fill & Glute Medius';
+                title.textContent = 'Gluteus Medius Expansion';
+                desc.textContent = 'Isolating upper/lateral glute fibers to fill in lateral hip dips and widen upper pelvic silhouette.';
+                exercises.textContent = 'Cable Standing Hip Abductions, Resistance Band Clamshells, Side Planks with Leg Elevate.';
+                avoidCue.textContent = 'Do not let hip flexors rotate forward to ensure direct loading on outer glute peak.';
+            } else if (zoneKey === 'obliques') {
+                badge.textContent = 'Avoidance Zone: Obliques & Waist Thickness';
+                title.textContent = 'Waist Taper & Anti-Oblique Protocol';
+                desc.textContent = 'Heavy weighted side bends widen lateral waist girth. We replace them with vacuum compression holds.';
+                exercises.textContent = 'Stomach Vacuums, L-Sit Compression Holds, Plank Tucks.';
+                avoidCue.textContent = 'AVOID heavy dumbbell side-bends or heavy rotational torso machines.';
+            } else if (zoneKey === 'delts') {
+                badge.textContent = 'Frame Accent: Lateral Deltoids';
+                title.textContent = 'Lateral Shoulder Capping';
+                desc.textContent = 'Widening shoulder capped width creates the optical illusion of a smaller waist and athletic frame.';
+                exercises.textContent = 'Lean-away Cable Lateral Raises, Seated Dumbbell Side Raises, Face Pulls.';
+                avoidCue.textContent = 'Keep traps depressed down to isolate lateral head rather than upper neck.';
+            } else if (zoneKey === 'traps') {
+                badge.textContent = 'Minimization Zone: Upper Trapezius';
+                title.textContent = 'Neck Slenderness & Trap Suppression';
+                desc.textContent = 'Avoiding heavy shoulder shrugs keeps the neck sleek and accentuates collarbone framing.';
+                exercises.textContent = 'Depressed Shoulder Scapular Retractions, Face Pulls (low cable angle).';
+                avoidCue.textContent = 'Avoid heavy barbell shrugs or upright rows above chest height.';
+            } else if (zoneKey === 'lats') {
+                badge.textContent = 'V-Taper Target: Upper Back & Lats';
+                title.textContent = 'Latissimus Dorsi Broadening';
+                desc.textContent = 'Developing lat width creates the classic V-taper frame taper from shoulders down to waist.';
+                exercises.textContent = 'Wide-grip Lat Pulldowns, Straight-Arm Cable Pullovers, Neutral Pull-ups.';
+                avoidCue.textContent = 'Avoid excessive biceps pulling or rounded shoulder posture.';
+            }
+        }
+
+        function renderExerciseLibrary() {
+            const container = document.getElementById('library-cards-container');
+            if (!container) return;
+
+            container.innerHTML = state.exerciseLibrary.map(ex => `
+                <div class="p-5 bg-slate-950/90 rounded-2xl border border-slate-800 hover:border-slate-700 transition space-y-3">
+                    <div class="flex items-start justify-between">
+                        <div>
+                            <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase theme-badge-pill">
+                                ${ex.category}
+                            </span>
+                            <h3 class="text-sm font-bold text-white mt-2">${ex.name}</h3>
+                        </div>
+                    </div>
+                    <p class="text-xs text-slate-300 leading-relaxed">${ex.cues}</p>
+                    <div class="grid grid-cols-2 gap-2 text-[10px] pt-1">
+                        <div class="p-2.5 rounded-xl bg-slate-900 border border-slate-800">
+                            <span class="text-pink-400 font-extrabold block uppercase">Primary Target</span>
+                            <span class="text-slate-300">${ex.target}</span>
+                        </div>
+                        <div class="p-2.5 rounded-xl bg-slate-900 border border-slate-800">
+                            <span class="text-amber-400 font-extrabold block uppercase">Avoid Synergist</span>
+                            <span class="text-slate-300">${ex.avoid}</span>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function setLibFilter(cat) {
+            document.querySelectorAll('.lib-filter-btn').forEach(btn => {
+                btn.className = 'lib-filter-btn px-4 py-2 rounded-xl bg-slate-900 text-slate-300 hover:text-white border border-slate-800 whitespace-nowrap';
+            });
+            if (window.event && window.event.target) {
+                window.event.target.className = 'lib-filter-btn active px-4 py-2 rounded-xl bg-teal-500 text-slate-950 font-bold whitespace-nowrap';
+            }
+            filterExerciseLibrary(cat);
+        }
+
+        function filterExerciseLibrary(category = 'all') {
+            const queryInput = document.getElementById('library-search');
+            const query = queryInput ? queryInput.value.toLowerCase() : '';
+            const cards = document.querySelectorAll('#library-cards-container > div');
+            
+            state.exerciseLibrary.forEach((ex, idx) => {
+                const card = cards[idx];
+                if (!card) return;
+                
+                const matchesSearch = ex.name.toLowerCase().includes(query) || ex.target.toLowerCase().includes(query);
+                const matchesCat = (category === 'all') || (ex.category === category);
+
+                if (matchesSearch && matchesCat) {
+                    card.classList.remove('hidden');
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
+        }
+
+        function filterLibraryByZone() {
+            navigateToPage('library');
+            const searchInput = document.getElementById('library-search');
+            if (searchInput) searchInput.value = 'glute';
+            filterExerciseLibrary();
+        }
+
+        function saveQuickNote() {
+            const input = document.getElementById('sticky-note-input');
+            const val = input.value.trim();
+            if (!val) return;
+
+            saveQuickNoteSystem(val);
+            input.value = '';
+        }
+
+        function saveQuickNoteSystem(text) {
+            const noteObj = {
+                id: Date.now(),
+                text: text,
+                time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+            };
+            state.quickNotes.unshift(noteObj);
+            saveToLocalStorage();
+            updateNotesBadge();
+            renderJournalNotes();
+        }
+
+        function updateNotesBadge() {
+            const badge = document.getElementById('notes-count-badge');
+            if (badge) badge.textContent = state.quickNotes.length;
+        }
+
+        function renderJournalNotes() {
+            const container = document.getElementById('notes-journal-container');
+            if (!container) return;
+
+            if (state.quickNotes.length === 0) {
+                container.innerHTML = `<div class="text-center text-slate-500 text-xs py-10">No logged workout notes yet. Type a note in the bottom bar to log feedback!</div>`;
+                return;
+            }
+
+            container.innerHTML = state.quickNotes.map(n => `
+                <div class="p-4 bg-slate-950 rounded-2xl border border-slate-800 flex items-start justify-between gap-3 shadow-sm">
+                    <div>
+                        <div class="text-xs text-slate-200 font-medium">${n.text}</div>
+                        <span class="text-[10px] text-slate-500 mt-1 block">${n.time}</span>
+                    </div>
+                    <button onclick="deleteNote(${n.id})" class="text-slate-600 hover:text-rose-400 text-xs p-1">
+                        <i class="fa-solid fa-trash"></i>
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        function deleteNote(id) {
+            state.quickNotes = state.quickNotes.filter(n => n.id !== id);
+            saveToLocalStorage();
+            updateNotesBadge();
+            renderJournalNotes();
+        }
+
+        function clearAllNotes() {
+            state.quickNotes = [];
+            saveToLocalStorage();
+            updateNotesBadge();
+            renderJournalNotes();
+        }
+
+        function saveToLocalStorage() {
+            try {
+                localStorage.setItem('affirmfit_theme', state.theme);
+                localStorage.setItem('affirmfit_profile', JSON.stringify(state.profile));
+                localStorage.setItem('affirmfit_notes', JSON.stringify(state.quickNotes));
+            } catch (e) {
+                console.error('Storage save failed:', e);
+            }
+        }
+
+        function loadFromLocalStorage() {
+            try {
+                const t = localStorage.getItem('affirmfit_theme');
+                const p = localStorage.getItem('affirmfit_profile');
+                const n = localStorage.getItem('affirmfit_notes');
+                if (t) state.theme = t;
+                if (p) state.profile = { ...state.profile, ...JSON.parse(p) };
+                if (n) state.quickNotes = JSON.parse(n);
+                updateNotesBadge();
+            } catch (e) {
+                console.error('Storage load failed:', e);
+            }
+        }
+    </script>
+</body>
+</html>
+```
